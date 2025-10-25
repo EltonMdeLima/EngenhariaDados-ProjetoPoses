@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  # Nome do nosso serviço: 'pipeline-poses'
+  pipeline-poses:
+    # 1. Informa ao Docker para construir a imagem usando o Dockerfile
+    build: .
+    
+    # 2. Mapeamento de Volumes (O Ponto Crítico)
+    #    Isso conecta as pastas locais com as pastas dentro do container,
+    #    permitindo que o container leia os vídeos e salve o banco de dados.
+    volumes:
+      # Pasta de entrada: [Pasta local] : [Pasta no container] (leitura)
+      - ./videos_input:/app/videos_input:ro
+      
+      # Pasta de saída (JSON brutos): [Local] : [Container] (escrita)
+      - ./keypoints_output:/app/keypoints_output
+      
+      # Pasta do Banco de Dados: [Local] : [Container] (escrita)
+      - ./database:/app/database
