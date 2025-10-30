@@ -2,7 +2,9 @@
 
 ![Estrutura de Engenharia de dados - Projeto Poses](/doc/img/Estrutura-do-Dados.png "Estrutura da Engenharia de Dados")
 
-Este projeto foi desenvolvido como parte das atividades do curso de **Especialista em DevOps**, com um foco em **Engenharia de Dados**. Ele exemplifica a construção de um pipeline, automatizado e containerizado para a análise e estruturação de movimentos humanos a partir de vídeos.
+Este projeto foi desenvolvido como parte das atividades do curso de **Especialista em DevOps**, com um foco em **Engenharia de Dados**. Ele exemplifica a construção de um pipeline, automatizado e containerizado para a análise e estruturação de movimentos humanos a partir de vídeos, construindo toda a extração, limpeza e transformação dos dados, preparando-os para uso em outros sistemas.
+
+O projeto pode ser encontrado no github: `https://github.com/EltonMdeLima/EngenhariaDados-ProjetoPoses.git`
 
 ## 1. Visão Geral do Projeto
 
@@ -85,8 +87,12 @@ A arquitetura do projeto é projetada para ser **100% local**, leve e baseada em
 
 Para executar este projeto, você precisará ter instalado em sua máquina:
 
-*   **Docker:** Para a construção e gerenciamento dos contêineres. [Guia de Instalação do Docker](https://docs.docker.com/get-docker/)
-*   **Docker Compose:** Para orquestrar o serviço do pipeline. Geralmente vem incluído na instalação do Docker Desktop.
+| Tecnologias | Versão mínima | Observação |
+| :--- | :--- | :--- |
+| **Git** | Qualquer versão recente | Necessário para clonar o repositório|
+| **Python** | 3.9+ | Linguagem principal do script de processamento.|
+| **Docker** | 20.10+ | Para criar e gerenciar o ambiente containerizado. |
+| **Docker Compose** | v2.0+ | Geralmente incluído na instalação do Docker Desktop. Usado para orquestrar os contêineres. |
 
 ## 6. Como Executar o Projeto
 
@@ -95,57 +101,57 @@ A execução do pipeline é **totalmente containerizada** via Docker para garant
 Siga os passos abaixo:
 
 1.  **Prepare os Vídeos de Entrada:**
-    *   Certifique-se de ter um ou mais arquivos de vídeo no formato `.mp4` na pasta `videos_input/`. Por exemplo, `movimento1.mp4`. Estes serão os vídeos que o pipeline irá processar.
+    * Certifique-se de ter um ou mais arquivos de vídeo no formato `.mp4` na pasta `videos_input/`. Por exemplo, `movimento1.mp4`. Estes serão os vídeos que o pipeline irá processar.
 
 2.  **Abra o Terminal:**
-    *   Navegue até o diretório raiz do projeto no seu terminal. Este é o diretório que contém os arquivos `docker-compose.yml` e `Dockerfile`.
+    * Navegue até o diretório raiz do projeto no seu terminal. Este é o diretório que contém os arquivos `docker-compose.yml` e `Dockerfile`.
 
 3.  **Execute o Pipeline com Docker Compose:**
-    *   Execute o comando a seguir para construir a imagem Docker (se ainda não tiver sido construída ou se houver alterações) e iniciar o serviço do pipeline:
+    * Execute o comando a seguir para construir a imagem Docker (se ainda não tiver sido construída ou se houver alterações) e iniciar o serviço do pipeline:
 
     ```bash
     docker-compose up --build
     ```
-    *   **Explicação do comando:**
-        *   `docker-compose up`: Inicia os serviços definidos no `docker-compose.yml`.
-        *   `--build`: Garante que a imagem Docker seja reconstruída a partir do `Dockerfile` antes de iniciar o contêiner. Isso é importante para garantir que todas as dependências estejam atualizadas e que o ambiente esteja conforme definido.
+    * **Explicação do comando:**
+        * `docker-compose up`: Inicia os serviços definidos no `docker-compose.yml`.
+        * `--build`: Garante que a imagem Docker seja reconstruída a partir do `Dockerfile` antes de iniciar o contêiner. Isso é importante para garantir que todas as dependências estejam atualizadas e que o ambiente esteja conforme definido.
 
 4.  **Acompanhe o Processamento:**
-    *   Você verá a saída do log do pipeline no terminal, indicando o progresso da análise de cada vídeo.
+    * Você verá a saída do log do pipeline no terminal, indicando o progresso da análise de cada vídeo.
 
 ## 7. Saídas e Resultados
 
 Após a execução bem-sucedida do comando `docker-compose up --build`, você encontrará os seguintes resultados no seu sistema de arquivos local, devido ao uso dos volumes Docker:
 
-*   **Keypoints Brutos (JSON):**
-    *   Na pasta `keypoints_output/`, você encontrará um arquivo JSON para cada vídeo processado (ex: `movimento1.mp4.json`). Estes arquivos contêm os keypoints brutos extraídos pelo MediaPipe, frame a frame.
-*   **Banco de Dados Estruturado (SQLite):**
-    *   Na pasta `database/`, o arquivo `poses.db` será criado ou atualizado. Este banco de dados contém os keypoints estruturados e achatados em tabelas, prontos para serem consultados ou integrados com outras ferramentas.
+* **Keypoints Brutos (JSON):**
+    * Na pasta `keypoints_output/`, você encontrará um arquivo JSON para cada vídeo processado (ex: `movimento1.mp4.json`). Estes arquivos contêm os keypoints brutos extraídos pelo MediaPipe, frame a frame.
+* **Banco de Dados Estruturado (SQLite):**
+    * Na pasta `database/`, o arquivo `poses.db` será criado ou atualizado. Este banco de dados contém os keypoints estruturados e achatados em tabelas, prontos para serem consultados ou integrados com outras ferramentas.
 
 ## 8. Tecnologias Utilizadas
 
-*   **Python:** Linguagem de programação principal.
-*   **MediaPipe:** Biblioteca de IA para detecção de pose.
-*   **OpenCV:** Biblioteca para processamento de vídeo (`opencv-python-headless`).
-*   **Pandas:** Biblioteca para manipulação e estruturação de dados.
-*   **SQLite:** Banco de dados relacional local.
-*   **Docker:** Plataforma de containerização.
-*   **Docker Compose:** Ferramenta para orquestração de contêineres multi-serviços.
+* **Python:** Linguagem de programação principal.
+* **MediaPipe:** Biblioteca de IA para detecção de pose.
+* **OpenCV:** Biblioteca para processamento de vídeo (`opencv-python-headless`).
+* **Pandas:** Biblioteca para manipulação e estruturação de dados.
+* **SQLite:** Banco de dados relacional local.
+* **Docker:** Plataforma de containerização.
+* **Docker Compose:** Ferramenta para orquestração de contêineres.
 
 ## 9. Próximos Passos e Melhorias Futuras
 
 Este projeto serve como uma base robusta e pode ser expandido de diversas maneiras:
 
-*   **Integração com Blender:** Desenvolver scripts em Python para o Blender que leiam os arquivos JSON ou consultem o `poses.db` para automatizar a animação de modelos 3D.
-*   **Integração com Ferramentas de BI:** Conectar o `poses.db` a ferramentas como Power BI, Tableau ou Grafana para criar dashboards de análise de movimento.
-*   **Serviço Web:** Criar uma API Flask/FastAPI para expor a funcionalidade de análise de vídeos como um serviço.
-*   **Notificações/Alertas:** Adicionar um sistema de notificação para quando um vídeo for processado ou quando certas condições de movimento forem detectadas.
-*   **Implantação em Nuvem:** Migrar o pipeline para um ambiente de nuvem (AWS Lambda, Google Cloud Run, Azure Container Instances) para escalabilidade e processamento distribuído.
-*   **Otimização de Performance:** Implementar processamento paralelo para vídeos ou otimizar as operações do MediaPipe.
+* **Integração com Blender:** Desenvolver scripts em Python para o Blender que leiam os arquivos JSON ou consultem o `poses.db` para automatizar a animação de modelos 3D.
+* **Integração com Ferramentas de BI:** Conectar o `poses.db` a ferramentas como Power BI, Tableau ou Grafana para criar dashboards de análise de movimento.
+* **Serviço Web:** Criar uma API Flask/FastAPI para expor a funcionalidade de análise de vídeos como um serviço.
+* **Notificações/Alertas:** Adicionar um sistema de notificação para quando um vídeo for processado ou quando certas condições de movimento forem detectadas.
+* **Implantação em Nuvem:** Migrar o pipeline para um ambiente de nuvem (AWS Lambda, Google Cloud Run, Azure Container Instances) para escalabilidade e processamento distribuído.
+* **Otimização de Performance:** Implementar processamento paralelo para vídeos ou otimizar as operações do MediaPipe.
 
 ## 10. Autor
 
-*   Elton Marcelino de Lima
+* Elton Marcelino de Lima
 
 ## 11. Licença
 
